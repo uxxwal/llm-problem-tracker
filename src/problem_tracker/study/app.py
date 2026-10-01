@@ -377,8 +377,8 @@ def _end_body(run: Run, path: str) -> str:
     # the one reply the study most depends on the participant having read.
     parts = [f'<h1>{html.escape(run.spec["label"])} — finished</h1>',
              f'<div class="msgs">{_messages_block(run)}</div>',
-             '<div class="sub">That is the end of this conversation — you have used all '
-             f'{TURN_BUDGET} messages.</div>',
+             ('<div class="sub">That is the end of this conversation — you have used all '
+             f'{TURN_BUDGET} messages.</div>'),
              '<h2>Your completion code</h2>']
     parts.append(f'<div class="code big">{html.escape(run.completion_code)}</div>')
 
@@ -415,8 +415,8 @@ def _details_panel(pid: str) -> str:
     response that cannot be linked to its transcript."""
     if not pid.isdigit():
         return ""
-    rows = [f'<tr><td style="padding:4px 14px 4px 0">Participant number</td>'
-            f'<td><strong>{html.escape(pid)}</strong></td></tr>']
+    rows = [(f'<tr><td style="padding:4px 14px 4px 0">Participant number</td>'
+            f'<td><strong>{html.escape(pid)}</strong></td></tr>')]
     with _lock:
         for spec in assign(int(pid)):
             run = _runs.get(f'{pid}:{spec["session"]}')

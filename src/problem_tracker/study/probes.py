@@ -64,11 +64,11 @@ PROBES = {
                "abandon) and that details route to the RIGHT goal.",
         "watch": [
             "ZERO abandon_goal — whatever the goal count, nothing should be dismissed",
-            "how many goals? the subsumption tie-break says visa/flat/furniture are "
+            ("how many goals? the subsumption tie-break says visa/flat/furniture are "
             "COMPONENTS of 'plan the move', so one goal is now the intended answer — "
-            "but check what is LOST by collapsing them (grouping, per-component scoping)",
-            "if they do collapse: are the visa deadline and the €900 rent still "
-            "distinguishable in one flat constraint list?",
+            "but check what is LOST by collapsing them (grouping, per-component scoping)"),
+            ("if they do collapse: are the visa deadline and the €900 rent still "
+            "distinguishable in one flat constraint list?"),
             "'the cheaper option' at the end — where does it land?",
         ],
         "turns": [
@@ -78,8 +78,8 @@ PROBES = {
             "and I need to work out what to do with my furniture",
             "the visa application has to be in six weeks before I travel",
             "for the flat, max 900 euros a month and it needs to allow pets",
-            "shipping the furniture is either 800 quid or I sell it all, "
-            "I'm leaning towards the cheaper option",
+            ("shipping the furniture is either 800 quid or I sell it all, "
+             "I'm leaning towards the cheaper option"),
         ],
     },
 

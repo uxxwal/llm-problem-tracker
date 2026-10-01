@@ -88,8 +88,8 @@ _FEW_SHOTS = [
         "[]",
         "I've got a few things to sort this week — the car needs servicing and I have to find someone to cover my Thursday shift",
         # Two distinct objectives in one turn: both created, neither abandoned.
-        '[{"operation": "create_goal", "goal_text": "Get car serviced"}, '
-        '{"operation": "create_goal", "goal_text": "Find shift cover"}]',
+        ('[{"operation": "create_goal", "goal_text": "Get car serviced"}, '
+        '{"operation": "create_goal", "goal_text": "Find shift cover"}]'),
     ),
     (
         '[{"goal_id": "G1", "status": "active", "goal_text": "Run charity bake sale"}]',
@@ -100,9 +100,9 @@ _FEW_SHOTS = [
         '[{"operation": "no_goal_change"}]',
     ),
     (
-        '[{"goal_id": "G1", "status": "active", "goal_text": "Get car serviced"}, '
+        ('[{"goal_id": "G1", "status": "active", "goal_text": "Get car serviced"}, '
         '{"goal_id": "G2", "status": "active", "goal_text": "Find shift cover"}, '
-        '{"goal_id": "G3", "status": "active", "goal_text": "Book dentist"}]',
+        '{"goal_id": "G3", "status": "active", "goal_text": "Book dentist"}]'),
         "the dentist has to be after 5, I can't get away from work before then",
         # Adds a condition to an existing goal. Several goals active, none
         # created or ended — this is a detail turn.
@@ -190,8 +190,8 @@ _VARIABLE_EXTRACTION_FEW_SHOTS = [
         "G1",
         [],
         # "mid-range budget" is a soft constraint — not a variable.
-        '[{"name": "destination", "value": "Kyoto", "role": "fact", "required": true}, '
-        '{"name": "trip_duration", "value": "5 days", "role": "fact", "required": true}]',
+        ('[{"name": "destination", "value": "Kyoto", "role": "fact", "required": true}, '
+        '{"name": "trip_duration", "value": "5 days", "role": "fact", "required": true}]'),
     ),
     (
         "actually, let's make it 7 days",
@@ -219,8 +219,8 @@ _VARIABLE_EXTRACTION_FEW_SHOTS = [
         'G1 ("Get car serviced")',
         [],
         # Situation facts, in a domain with no money in it at all.
-        '[{"name": "garage_location", "value": "Leith", "role": "fact", "required": true}, '
-        '{"name": "wfh_day", "value": "Tuesday", "role": "fact", "required": false}]',
+        ('[{"name": "garage_location", "value": "Leith", "role": "fact", "required": true}, '
+        '{"name": "wfh_day", "value": "Tuesday", "role": "fact", "required": false}]'),
     ),
     (
         "the dentist has to be after 5, I can't get away from work before then",
@@ -338,8 +338,8 @@ _CONSTRAINT_FEW_SHOTS = [
         "I need to get there by Friday and the budget absolutely cannot go above £800",
         "G1",
         [],
-        '[{"name": "arrival_deadline", "description": "must arrive by Friday", "constraint_type": "hard"}, '
-        '{"name": "budget_ceiling", "description": "budget cannot exceed £800", "constraint_type": "hard"}]',
+        ('[{"name": "arrival_deadline", "description": "must arrive by Friday", "constraint_type": "hard"}, '
+        '{"name": "budget_ceiling", "description": "budget cannot exceed £800", "constraint_type": "hard"}]'),
     ),
     (
         "I prefer non-stop flights if possible, but I can do one stop",
@@ -361,8 +361,8 @@ _CONSTRAINT_FEW_SHOTS = [
         [],
         # TWO conditions in one sentence: a hedged target (soft) and a limit
         # (hard). Merging them would lose the ceiling.
-        '[{"name": "budget_target", "description": "around £20 per person", "constraint_type": "soft"}, '
-        '{"name": "budget_ceiling", "description": "no more than £30 per person", "constraint_type": "hard"}]',
+        ('[{"name": "budget_target", "description": "around £20 per person", "constraint_type": "soft"}, '
+        '{"name": "budget_ceiling", "description": "no more than £30 per person", "constraint_type": "hard"}]'),
     ),
     (
         "there will be 12 of us and it needs to be open late on Thursday",
@@ -378,8 +378,8 @@ _CONSTRAINT_FEW_SHOTS = [
         [],
         # A compound statement with NO money in it: a hard deadline and a soft
         # preference, extracted separately with their own types.
-        '[{"name": "completion_deadline", "description": "must be completed before Friday", "constraint_type": "hard"}, '
-        '{"name": "preferred_slot", "description": "ideally Tuesday morning", "constraint_type": "soft"}]',
+        ('[{"name": "completion_deadline", "description": "must be completed before Friday", "constraint_type": "hard"}, '
+        '{"name": "preferred_slot", "description": "ideally Tuesday morning", "constraint_type": "soft"}]'),
     ),
     (
         "actually make that before Thursday",
@@ -418,8 +418,8 @@ _CONSTRAINT_FEW_SHOTS = [
         # "must" teaches the model to produce exactly the type/wording mismatch
         # that renders as "Preferred (soft constraints): must ...", muddying the
         # only distinction this block exists to convey.
-        '[{"name": "gym_timing", "description": "the gym should come after the mechanic appointment", "constraint_type": "soft"}, '
-        '{"name": "day_end", "description": "everything must be finished by 5pm", "constraint_type": "hard"}]',
+        ('[{"name": "gym_timing", "description": "the gym should come after the mechanic appointment", "constraint_type": "soft"}, '
+        '{"name": "day_end", "description": "everything must be finished by 5pm", "constraint_type": "hard"}]'),
     ),
     (
         "Oh, and it must be completely vegetarian — no exceptions",
