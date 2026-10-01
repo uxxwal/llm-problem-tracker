@@ -1,6 +1,6 @@
 import json
-from problem_tracker.core.problem_description import ExplicitState
 
+from problem_tracker.core.problem_description import ExplicitState
 
 GOAL_SYSTEM_PROMPT = """You are a goal-tracking assistant. Given a list of current goals and a new user turn, output a JSON array of goal operations.
 

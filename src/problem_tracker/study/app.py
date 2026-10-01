@@ -28,18 +28,23 @@ import os
 import sys
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from typing import Any, Dict, List, Optional
 from urllib.parse import parse_qs, urlparse
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from problem_tracker.config import load_env, require_llm_config                   # noqa: E402
-from problem_tracker.core.problem_description import ProblemDescription          # noqa: E402
-from problem_tracker.core.session import Session                                  # noqa: E402
-from problem_tracker.llm_client import LLMClient                                  # noqa: E402
-from problem_tracker.updaters import ExplicitUpdater                              # noqa: E402
-from problem_tracker.study.reply import ReplyGenerator, render_problem_description  # noqa: E402
-from problem_tracker.study.scenarios import TURN_BUDGET, assign, get_scenario     # noqa: E402
+from problem_tracker.config import load_env, require_llm_config
+from problem_tracker.core.session import Session
+from problem_tracker.llm_client import LLMClient
+from problem_tracker.study.reply import (
+    ReplyGenerator,
+    render_problem_description,
+)
+from problem_tracker.study.scenarios import (
+    TURN_BUDGET,
+    assign,
+    get_scenario,
+)
+from problem_tracker.updaters import ExplicitUpdater
 
 logger = logging.getLogger(__name__)
 
@@ -84,7 +89,7 @@ def _use_pilot_dir() -> None:
 #                       hosts with ephemeral disks (Render, Fly), where files
 #                       vanish on redeploy: export after every participant.
 _lock = threading.Lock()
-_runs: Dict[str, "Run"] = {}
+_runs: dict[str, Run] = {}
 
 # Participant numbers that have cleared the access code at /start. /begin and
 # /send check membership, because they are the endpoints that spend money and
@@ -129,7 +134,7 @@ class _DryRunClient:
         return []
 
 
-def _rehydrate(pid: str, session_no: str, client, updater, replier) -> Optional["Run"]:
+def _rehydrate(pid: str, session_no: str, client, updater, replier) -> Run | None:
     """Rebuild an in-progress Run from its autosaved session file.
 
     ONLY POSSIBLE FOR SESSIONS THAT STORED THEIR CONTENT. Study sessions do not:
@@ -175,12 +180,12 @@ def _rehydrate(pid: str, session_no: str, client, updater, replier) -> Optional[
 class Run:
     """One participant's session with one assistant."""
 
-    def __init__(self, pid: str, spec: Dict[str, str], client, updater, replier):
+    def __init__(self, pid: str, spec: dict[str, str], client, updater, replier):
         self.pid = pid
         self.spec = spec
         self.arm = spec["arm"]
         self.scenario = get_scenario(spec["scenario"])
-        self.history: List[Dict[str, str]] = []
+        self.history: list[dict[str, str]] = []
         self.turns = 0
         self.finished = False
         self.updater = updater
@@ -207,7 +212,7 @@ class Run:
     def completion_code(self) -> str:
         return f'{self.pid}-{self.spec["session"]}{self.turns:02d}'
 
-    def send(self, text: str) -> Optional[str]:
+    def send(self, text: str) -> str | None:
         with self.turn_lock:
             if self.finished:
                 return None
@@ -310,7 +315,7 @@ make sure you have finished the consent section of the questionnaire first.</div
 </form>{msg}"""
 
 
-def _issued_body(pid: str, spec: Dict[str, str]) -> str:
+def _issued_body(pid: str, spec: dict[str, str]) -> str:
     return (
         '<h1>Your participant number</h1>'
         f'<div class="code big">{html.escape(pid)}</div>'
@@ -472,7 +477,7 @@ def _review_body(pid: str) -> str:
             + _details_panel(pid))
 
 
-def _next_body(pid: str, spec: Dict[str, str]) -> str:
+def _next_body(pid: str, spec: dict[str, str]) -> str:
     return (
         f'<h1>Ready for {html.escape(spec["label"])}</h1>'
         '<div class="sub">Answer the questionnaire section for the previous assistant '
@@ -517,7 +522,7 @@ class Handler(BaseHTTPRequestHandler):
         with _lock:
             return pid in _authorised
 
-    def _form(self) -> Dict[str, str]:
+    def _form(self) -> dict[str, str]:
         length = int(self.headers.get("Content-Length", 0))
         raw = self.rfile.read(length).decode("utf-8")
         return {k: v[0] for k, v in parse_qs(raw, keep_blank_values=True).items()}
@@ -646,7 +651,7 @@ class Handler(BaseHTTPRequestHandler):
         self._respond(_page('<h1>Not found</h1>'), 404)
 
 
-def _lan_ip() -> Optional[str]:
+def _lan_ip() -> str | None:
     """Best-effort LAN address of this machine (no packets are actually sent)."""
     import socket
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -709,7 +714,7 @@ def main():
         print("  NOTE: reachable by anyone on this network. Stop the server when not in use.")
     else:
         print(f"  http://{args.host}:{args.port}   (this machine only)")
-        print(f"  for participants on other devices, restart with:  --host 0.0.0.0")
+        print("  for participants on other devices, restart with:  --host 0.0.0.0")
 
     print(f"  sessions saved to ./{SESSION_DIR}/   (Ctrl-C to stop)")
     try:

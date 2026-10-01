@@ -1,11 +1,17 @@
 """tests/test_schemas.py — unit tests for Goal, Variable, Constraint schemas."""
 
-from problem_tracker.schemas.goal import Goal, validate_goal, VALID_GOAL_STATUSES
-from problem_tracker.schemas.variable import Variable, validate_variable, VALID_VARIABLE_ROLES
-from problem_tracker.schemas.constraint import Constraint, validate_constraint, VALID_CONSTRAINT_TYPES
 from problem_tracker.core.problem_description import ProblemDescription
+from problem_tracker.schemas.constraint import (
+    Constraint,
+    validate_constraint,
+)
+from problem_tracker.schemas.goal import VALID_GOAL_STATUSES, Goal, validate_goal
+from problem_tracker.schemas.variable import (
+    VALID_VARIABLE_ROLES,
+    Variable,
+    validate_variable,
+)
 from tests.conftest import make_goal, make_pd_with_goal
-
 
 # ---------------------------------------------------------------------------
 # Fix 5: constraint is NOT in VALID_VARIABLE_ROLES

@@ -15,13 +15,15 @@ All log entries use the key ``turn_id`` (a string such as ``"t1"``).
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from problem_tracker.core.problem_description import ProblemDescription
 from problem_tracker.llm_client import LLMClient
+from problem_tracker.updaters.applicators.constraint_applicator import (
+    ConstraintApplicator,
+)
 from problem_tracker.updaters.errors import ExtractionError
 from problem_tracker.updaters.extractors.constraint_extractor import ConstraintExtractor
-from problem_tracker.updaters.applicators.constraint_applicator import ConstraintApplicator
 
 __all__ = ["ExplicitConstraintUpdater"]
 
@@ -29,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 class ExplicitConstraintUpdater:
-    def __init__(self, client: Optional[LLMClient] = None):
+    def __init__(self, client: LLMClient | None = None):
         self.extractor = ConstraintExtractor(client=client)
         self.applicator = ConstraintApplicator()
 
@@ -39,7 +41,7 @@ class ExplicitConstraintUpdater:
         user_turn: str,
         active_goal_id: str,
         turn_id: str,
-    ) -> Tuple[ProblemDescription, List[Dict[str, Any]]]:
+    ) -> tuple[ProblemDescription, list[dict[str, Any]]]:
         existing = [c for c in pd.explicit.constraints if c.goal_id == active_goal_id]
         goal = pd.get_goal(active_goal_id)
         goal_text = goal.goal_text if goal else ""

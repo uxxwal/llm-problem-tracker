@@ -9,7 +9,6 @@ import json
 import os
 import tempfile
 
-from problem_tracker.core.problem_description import ProblemDescription
 from problem_tracker.core.session import Session
 from problem_tracker.updaters import ExplicitUpdater
 from tests.conftest import make_pd_with_goal
@@ -165,7 +164,8 @@ def test_extraction_defaults_to_deterministic_sampling(monkeypatch=None):
     default is 1.0, which samples; three replays of one conversation then
     produce three different states. Pinned so a change is deliberate."""
     import os
-    from problem_tracker.llm_client import resolve_temperature, resolve_seed
+
+    from problem_tracker.llm_client import resolve_seed, resolve_temperature
     old = os.environ.pop("LLM_TEMPERATURE", None)
     try:
         assert resolve_temperature() == 0.0

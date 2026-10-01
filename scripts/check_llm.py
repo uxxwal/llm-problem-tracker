@@ -17,11 +17,11 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from problem_tracker.config import load_env                               # noqa: E402
-from problem_tracker.core.problem_description import ProblemDescription   # noqa: E402
-from problem_tracker.llm_client import LLMClient                          # noqa: E402
-from problem_tracker.updaters import ExplicitUpdater                      # noqa: E402
-from problem_tracker.study.reply import ReplyGenerator                    # noqa: E402
+from problem_tracker.config import load_env
+from problem_tracker.core.problem_description import ProblemDescription
+from problem_tracker.llm_client import LLMClient
+from problem_tracker.study.reply import ReplyGenerator
+from problem_tracker.updaters import ExplicitUpdater
 
 
 def fail(msg):

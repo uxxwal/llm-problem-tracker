@@ -19,19 +19,21 @@ All log entries use the key ``turn_id`` (a string such as ``"t1"``).
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List
+from typing import Any
 
 from problem_tracker.core.problem_description import ProblemDescription
+from problem_tracker.updaters.explicit_constraint_updater import (
+    ExplicitConstraintUpdater,
+)
 from problem_tracker.updaters.explicit_goal_updater import ExplicitGoalUpdater
 from problem_tracker.updaters.explicit_variable_updater import ExplicitVariableUpdater
-from problem_tracker.updaters.explicit_constraint_updater import ExplicitConstraintUpdater
 
 logger = logging.getLogger(__name__)
 
 
 def _focal_goal_ids_for_turn(
-    goal_log: List[Dict[str, Any]], pd: ProblemDescription
-) -> List[str]:
+    goal_log: list[dict[str, Any]], pd: ProblemDescription
+) -> list[str]:
     """Return the goal_ids this turn's variable/constraint extraction is scoped to.
 
     Goals are immutable and may be active concurrently, so a turn can have
@@ -117,10 +119,10 @@ def _contains_tokens(haystack: str, needle: str) -> bool:
 
 
 def _detect_overlap(
-    variable_ops: List[Dict[str, Any]],
-    constraint_ops: List[Dict[str, Any]],
+    variable_ops: list[dict[str, Any]],
+    constraint_ops: list[dict[str, Any]],
     turn_id: str,
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     """Flag same-turn variable/constraint pairs holding the same information.
 
     Under the formal separation (variables state what IS; constraints state what
@@ -138,7 +140,7 @@ def _detect_overlap(
     Pairs matching on VALUE are duplicates the constraint strictly dominates, and
     are marked resolvable; pairs matching on name alone are only reported.
     """
-    entries: List[Dict[str, Any]] = []
+    entries: list[dict[str, Any]] = []
     variables = [op for op in variable_ops
                  if op.get("operation") in ("create_variable", "update_variable")]
     constraints = [op for op in constraint_ops
@@ -427,8 +429,8 @@ class ExplicitUpdater:
                 })
         return entries
 
-    def update(self, pd: ProblemDescription, user_turn: str, turn_id: str) -> Dict[str, Any]:
-        operation_log: List[Dict[str, Any]] = []
+    def update(self, pd: ProblemDescription, user_turn: str, turn_id: str) -> dict[str, Any]:
+        operation_log: list[dict[str, Any]] = []
 
         # Stage 1: goal ops — routed through ExplicitGoalUpdater for validation
         # and before/after snapshots. Failures are recorded in goal_log, not raised.
@@ -469,8 +471,8 @@ class ExplicitUpdater:
         # claim the same utterance for every goal ("prefer no-dig beds" landing
         # on both the allotment and the fruit-tree goal). A statement belongs to
         # one goal; later duplicates are dropped and logged.
-        claimed_variables: Dict[Any, Dict[str, Any]] = {}
-        claimed_constraints: Dict[Any, Dict[str, Any]] = {}
+        claimed_variables: dict[Any, dict[str, Any]] = {}
+        claimed_constraints: dict[Any, dict[str, Any]] = {}
 
         for focal_goal_id in _focal_goal_ids_for_turn(goal_log, pd):
             pd, variable_ops = self.variable_updater.update(pd, user_turn, focal_goal_id, turn_id)

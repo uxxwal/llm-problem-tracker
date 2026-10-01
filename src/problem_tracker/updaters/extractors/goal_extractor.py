@@ -16,11 +16,15 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from problem_tracker.core.problem_description import ProblemDescription
 from problem_tracker.llm_client import LLMClient
-from problem_tracker.prompt_specs import GOAL_SYSTEM_PROMPT, _FEW_SHOTS, _make_user_message
+from problem_tracker.prompt_specs import (
+    _FEW_SHOTS,
+    GOAL_SYSTEM_PROMPT,
+    _make_user_message,
+)
 from problem_tracker.updaters.errors import ExtractionError
 
 __all__ = ["GoalExtractor"]
@@ -29,10 +33,10 @@ logger = logging.getLogger(__name__)
 
 
 class GoalExtractor:
-    def __init__(self, client: Optional[LLMClient] = None):
+    def __init__(self, client: LLMClient | None = None):
         self.client = client or LLMClient()
 
-    def propose(self, pd: ProblemDescription, user_turn: str) -> List[Dict[str, Any]]:
+    def propose(self, pd: ProblemDescription, user_turn: str) -> list[dict[str, Any]]:
         """Propose goal operations for one user turn.
 
         Returns the raw operation list from the LLM (unvalidated — shape and
@@ -57,7 +61,7 @@ class GoalExtractor:
     # Prompt assembly
     # ------------------------------------------------------------------
 
-    def _build_messages(self, pd: ProblemDescription, user_turn: str) -> List[Dict[str, str]]:
+    def _build_messages(self, pd: ProblemDescription, user_turn: str) -> list[dict[str, str]]:
         messages = [{"role": "system", "content": GOAL_SYSTEM_PROMPT}]
         for state_json, turn, output in _FEW_SHOTS:
             messages.append({"role": "user", "content": _make_user_message(state_json, turn)})

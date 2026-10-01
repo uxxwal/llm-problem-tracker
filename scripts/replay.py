@@ -34,11 +34,11 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from problem_tracker.config import load_env, require_llm_config            # noqa: E402
-from problem_tracker.core.problem_description import ProblemDescription    # noqa: E402
-from problem_tracker.llm_client import LLMClient                           # noqa: E402
-from problem_tracker.updaters import ExplicitUpdater                       # noqa: E402
-from problem_tracker.study.reply import render_problem_description         # noqa: E402
+from problem_tracker.config import load_env, require_llm_config
+from problem_tracker.core.problem_description import ProblemDescription
+from problem_tracker.llm_client import LLMClient
+from problem_tracker.study.reply import render_problem_description
+from problem_tracker.updaters import ExplicitUpdater
 
 _FAILURE_OPS = {
     "extraction_failed", "validation_failed", "apply_failed",
@@ -129,8 +129,8 @@ def structure_signature(pd):
 
 
 def main():
-    from problem_tracker.study import probes as _probes
     from problem_tracker.study import held_out as _held
+    from problem_tracker.study import probes as _probes
 
     class probes:
         """Probe lookup across both sets. Held-out conversations are kept in a

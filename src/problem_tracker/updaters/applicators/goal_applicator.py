@@ -18,12 +18,12 @@ IDs (goal_id) are assigned here, never by the LLM.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from problem_tracker.core.problem_description import ProblemDescription
 from problem_tracker.schemas.goal import Goal, validate_goal
 
-__all__ = ["GoalApplicator", "VALID_GOAL_OPERATIONS"]
+__all__ = ["VALID_GOAL_OPERATIONS", "GoalApplicator"]
 
 VALID_GOAL_OPERATIONS = {
     "create_goal",
@@ -52,7 +52,7 @@ class GoalApplicator:
     # Validation (shape only — no state access)
     # ------------------------------------------------------------------
 
-    def validate_operations(self, operations: List[Dict[str, Any]]) -> None:
+    def validate_operations(self, operations: list[dict[str, Any]]) -> None:
         """Check operation shape against the fixed vocabulary.
 
         Raises ValueError on an unknown operation type or missing field.
@@ -72,8 +72,8 @@ class GoalApplicator:
     # ------------------------------------------------------------------
 
     def apply_operation(
-        self, pd: ProblemDescription, op: Dict[str, Any], turn_id: str
-    ) -> Optional[Dict[str, Any]]:
+        self, pd: ProblemDescription, op: dict[str, Any], turn_id: str
+    ) -> dict[str, Any] | None:
         """Apply one validated operation. See _apply for behaviour.
 
         ``turn_id`` also identifies goals ended earlier in the SAME turn, which
@@ -82,8 +82,8 @@ class GoalApplicator:
         return self._apply(pd, op, turn_id)
 
     def _apply(
-        self, pd: ProblemDescription, op: Dict[str, Any], turn_id: str
-    ) -> Optional[Dict[str, Any]]:
+        self, pd: ProblemDescription, op: dict[str, Any], turn_id: str
+    ) -> dict[str, Any] | None:
         """Apply one validated operation. Returns a log entry (None for no-op).
 
         Raises ValueError when a precondition fails (referenced goal missing)
@@ -157,7 +157,7 @@ class GoalApplicator:
 
     def _set_status(
         self, pd: ProblemDescription, goal_id: str, status: str, operation: str, turn_id: str
-    ) -> Optional[Dict[str, Any]]:
+    ) -> dict[str, Any] | None:
         goal = self._require_goal(pd, goal_id)
         if goal.status == status:
             # Already in this state. Re-ending is a no-op, not a transition:
@@ -190,7 +190,7 @@ class GoalApplicator:
         before: Any,
         goal: Goal,
         before_dict: bool = False,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         return {
             "operation": operation,
             "goal_id": goal_id,

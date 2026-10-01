@@ -16,12 +16,11 @@ from __future__ import annotations
 
 import logging
 import os
-from typing import Any, Dict, List, Optional
 
 from problem_tracker.core.problem_description import ProblemDescription
-from problem_tracker.llm_client import LLMClient, ChatClient
+from problem_tracker.llm_client import ChatClient, LLMClient
 
-__all__ = ["ReplyGenerator", "render_problem_description", "ARMS"]
+__all__ = ["ARMS", "ReplyGenerator", "render_problem_description"]
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +76,7 @@ def render_problem_description(pd: ProblemDescription) -> str:
     if not active:
         return "(no goals established yet)"
 
-    blocks: List[str] = []
+    blocks: list[str] = []
     for goal in active:
         lines = [f'GOAL {goal.goal_id}: {goal.goal_text}']
 
@@ -154,9 +153,9 @@ class ReplyGenerator:
 
     def reply(
         self,
-        history: List[Dict[str, str]],
+        history: list[dict[str, str]],
         arm: str,
-        pd: Optional[ProblemDescription] = None,
+        pd: ProblemDescription | None = None,
     ) -> str:
         """Generate the assistant's next reply.
 
@@ -168,7 +167,7 @@ class ReplyGenerator:
         if arm not in ARMS:
             raise ValueError(f"Unknown arm {arm!r}; expected one of {ARMS}")
 
-        messages: List[Dict[str, str]] = [{"role": "system", "content": REPLY_SYSTEM_PROMPT}]
+        messages: list[dict[str, str]] = [{"role": "system", "content": REPLY_SYSTEM_PROMPT}]
 
         if arm == "problem_description":
             if pd is None:

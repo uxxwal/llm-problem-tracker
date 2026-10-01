@@ -1,7 +1,8 @@
-import os
 import json
+import os
 import re
 from typing import Protocol
+
 
 def resolve_temperature(explicit=None):
     """Extraction default is 0. Kept at module level so the default is testable
@@ -54,7 +55,9 @@ class LLMClient:
         self.timeout = float(timeout if timeout is not None
                              else os.getenv("LLM_TIMEOUT", "45"))
         try:
-            from openai import OpenAI  # lazy import so tests don't require openai installed
+            from openai import (
+                OpenAI,  # lazy import so tests don't require openai installed
+            )
             self.client = OpenAI(base_url=self.base_url, api_key=self.api_key)
         except ImportError as e:
             raise ImportError(

@@ -17,10 +17,14 @@ Identity rules mirror VariableApplicator:
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List
+from typing import Any
 
 from problem_tracker.core.problem_description import ProblemDescription
-from problem_tracker.schemas.constraint import Constraint, validate_constraint, VALID_CONSTRAINT_TYPES
+from problem_tracker.schemas.constraint import (
+    VALID_CONSTRAINT_TYPES,
+    Constraint,
+    validate_constraint,
+)
 
 __all__ = ["ConstraintApplicator"]
 
@@ -40,16 +44,16 @@ class ConstraintApplicator:
     def apply(
         self,
         pd: ProblemDescription,
-        raw: List[Dict[str, Any]],
+        raw: list[dict[str, Any]],
         active_goal_id: str,
         turn_id: str,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Apply raw extracted items to pd. Returns the operation log entries."""
         existing_by_name = {
             c.name: c for c in pd.explicit.constraints if c.goal_id == active_goal_id
         }
 
-        ops: List[Dict[str, Any]] = []
+        ops: list[dict[str, Any]] = []
         created_this_turn: set = set()
 
         for item in raw:

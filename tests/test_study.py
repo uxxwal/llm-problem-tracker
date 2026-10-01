@@ -6,11 +6,11 @@ the other. If that fails, RQ3 measures nothing.
 """
 
 from problem_tracker.core.problem_description import ProblemDescription
-from problem_tracker.schemas.variable import Variable
 from problem_tracker.schemas.constraint import Constraint
-from problem_tracker.study.reply import ReplyGenerator, render_problem_description, ARMS
+from problem_tracker.schemas.variable import Variable
+from problem_tracker.study.reply import ARMS, ReplyGenerator, render_problem_description
 from problem_tracker.study.scenarios import SCENARIOS, TURN_BUDGET, assign, get_scenario
-from tests.conftest import make_pd_with_goal, make_goal
+from tests.conftest import make_goal, make_pd_with_goal
 
 
 class _CapturingClient:
@@ -271,8 +271,11 @@ def test_study_sessions_store_nothing_the_participant_typed():
     The consequence, asserted here so it is not discovered during collection: a
     study session cannot be resumed after a restart, because there is nothing to
     resume it from."""
-    import json, shutil, tempfile
-    import problem_tracker.study.app as app
+    import json
+    import shutil
+    import tempfile
+
+    from problem_tracker.study import app
     from problem_tracker.updaters import ExplicitUpdater
 
     tmp = tempfile.mkdtemp()
@@ -351,8 +354,10 @@ def test_final_reply_is_shown_before_the_completion_code():
     never displayed. That message is the one asking the assistant to pull
     everything together, so its answer is the single reply the study most
     depends on them having read."""
-    import shutil, tempfile
-    import problem_tracker.study.app as app
+    import shutil
+    import tempfile
+
+    from problem_tracker.study import app
     from problem_tracker.updaters import ExplicitUpdater
 
     tmp = tempfile.mkdtemp()

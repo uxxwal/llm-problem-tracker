@@ -35,11 +35,11 @@ import json
 import os
 import uuid
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from problem_tracker.core.problem_description import ProblemDescription
 
-__all__ = ["Session", "SESSION_FORMAT_VERSION", "prompt_fingerprint"]
+__all__ = ["SESSION_FORMAT_VERSION", "Session", "prompt_fingerprint"]
 
 SESSION_FORMAT_VERSION = "session_v1"
 
@@ -63,7 +63,7 @@ def prompt_fingerprint() -> str:
         repr(ps._CONSTRAINT_FEW_SHOTS),
     ]
     try:
-        from problem_tracker.study.reply import REPLY_SYSTEM_PROMPT, _PD_PREAMBLE
+        from problem_tracker.study.reply import _PD_PREAMBLE, REPLY_SYSTEM_PROMPT
         parts += [REPLY_SYSTEM_PROMPT, _PD_PREAMBLE]
     except Exception:
         pass  # reply generation is only present for study runs
@@ -82,11 +82,11 @@ def _new_session_id() -> str:
 class Session:
     def __init__(
         self,
-        session_id: Optional[str] = None,
-        pd: Optional[ProblemDescription] = None,
+        session_id: str | None = None,
+        pd: ProblemDescription | None = None,
         model: str = "",
         notes: str = "",
-        decode: Optional[Dict[str, Any]] = None,
+        decode: dict[str, Any] | None = None,
         store_content: bool = True,
     ):
         # store_content=False writes NO participant-derived text: no utterance,
@@ -109,7 +109,7 @@ class Session:
         self.notes = notes      # free-text label, e.g. scenario name / participant id
         self.prompt_version = prompt_fingerprint()
         self.pd = pd or ProblemDescription()
-        self.stg: List[Dict[str, Any]] = []
+        self.stg: list[dict[str, Any]] = []
         self._turn_counter = 0
 
     # ------------------------------------------------------------------
@@ -124,9 +124,9 @@ class Session:
         self,
         turn_id: str,
         user_turn: str,
-        operations: List[Dict[str, Any]],
+        operations: list[dict[str, Any]],
         pd: ProblemDescription,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Append one STG entry (low-level; state must already be updated)."""
         if self.store_content:
             entry = {
@@ -158,7 +158,7 @@ class Session:
         self.pd = pd
         return entry
 
-    def process_turn(self, updater, user_turn: str) -> Dict[str, Any]:
+    def process_turn(self, updater, user_turn: str) -> dict[str, Any]:
         """Convenience wrapper: run one turn through an ExplicitUpdater and
         record it. Returns the updater result (state + operation_log)."""
         turn_id = self.next_turn_id()
@@ -171,7 +171,7 @@ class Session:
     # Serialization
     # ------------------------------------------------------------------
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         data = {
             "format": SESSION_FORMAT_VERSION,
             "session_id": self.session_id,
@@ -190,7 +190,7 @@ class Session:
         return data
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "Session":
+    def from_dict(cls, data: dict[str, Any]) -> Session:
         session = cls(
             session_id=data["session_id"],
             pd=ProblemDescription.from_dict(data.get("final_state", {})),
@@ -223,7 +223,7 @@ class Session:
         return path
 
     @classmethod
-    def load(cls, path: str) -> "Session":
+    def load(cls, path: str) -> Session:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
         return cls.from_dict(data)

@@ -13,11 +13,11 @@ identity update.
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from problem_tracker.llm_client import LLMClient
-from problem_tracker.schemas.variable import Variable
 from problem_tracker.prompt_specs import build_variable_extraction_messages
+from problem_tracker.schemas.variable import Variable
 from problem_tracker.updaters.errors import ExtractionError
 
 __all__ = ["VariableExtractor"]
@@ -26,16 +26,16 @@ logger = logging.getLogger(__name__)
 
 
 class VariableExtractor:
-    def __init__(self, client: Optional[LLMClient] = None):
+    def __init__(self, client: LLMClient | None = None):
         self.client = client or LLMClient()
 
     def extract(
         self,
         user_turn: str,
         active_goal_id: str,
-        existing: Optional[List[Variable]] = None,
+        existing: list[Variable] | None = None,
         goal_text: str = "",
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Extract raw variable items from one user turn.
 
         ``existing`` (variables already tracked for this goal) is passed to the

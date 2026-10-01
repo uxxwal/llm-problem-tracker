@@ -13,12 +13,12 @@ No fields are invented beyond that schema.
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, asdict
-from typing import Any, Dict, List
+from dataclasses import asdict, dataclass
+from typing import Any
 
 __all__ = [
-    "VARIABLE_SCHEMA_VERSION",
     "VALID_VARIABLE_ROLES",
+    "VARIABLE_SCHEMA_VERSION",
     "Variable",
     "validate_variable",
 ]
@@ -69,12 +69,12 @@ class Variable:
     introduced_turn: str = ""
     last_updated_turn: str = ""
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return a JSON-serializable dict for this variable."""
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "Variable":
+    def from_dict(cls, data: dict[str, Any]) -> Variable:
         """Construct a Variable from a plain dict (e.g. parsed JSON)."""
         return cls(
             variable_id=data["variable_id"],
@@ -88,13 +88,13 @@ class Variable:
         )
 
 
-def validate_variable(variable: Variable) -> List[str]:
+def validate_variable(variable: Variable) -> list[str]:
     """Validate a Variable against variable_schema_v1.
 
     Returns a list of human-readable error strings. An empty list means the
     variable is valid.
     """
-    errors: List[str] = []
+    errors: list[str] = []
 
     if not variable.variable_id:
         errors.append("variable_id is required and must be non-empty")

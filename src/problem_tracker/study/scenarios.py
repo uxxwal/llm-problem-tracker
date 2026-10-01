@@ -76,13 +76,11 @@ starts. It must NOT be changed once data collection has begun.)
 
 from __future__ import annotations
 
-from typing import Dict, List, Tuple
-
 __all__ = ["SCENARIOS", "TURN_BUDGET", "assign", "get_scenario"]
 
 TURN_BUDGET = 7
 
-SCENARIOS: Dict[str, Dict[str, str]] = {
+SCENARIOS: dict[str, dict[str, str]] = {
     "S1": {
         "id": "S1",
         "title": "Getting up to speed on a topic",
@@ -126,7 +124,7 @@ SCENARIOS: Dict[str, Dict[str, str]] = {
 
 # (scenario_id, arm) pairs, in session order.
 # LIVE DESIGN: schema arm always second; scenario alternates.
-_GROUPS: List[Tuple[Tuple[str, str], Tuple[str, str]]] = [
+_GROUPS: list[tuple[tuple[str, str], tuple[str, str]]] = [
     (("S1", "baseline"), ("S2", "problem_description")),
     (("S2", "baseline"), ("S1", "problem_description")),
 ]
@@ -134,7 +132,7 @@ _GROUPS: List[Tuple[Tuple[str, str], Tuple[str, str]]] = [
 # Kept for the record: the four-group design that also counterbalanced order.
 # Swapping _GROUPS to this restores order-counterbalancing at the cost of half
 # the participants doing the C-block from memory of an earlier conversation.
-_GROUPS_COUNTERBALANCED: List[Tuple[Tuple[str, str], Tuple[str, str]]] = [
+_GROUPS_COUNTERBALANCED: list[tuple[tuple[str, str], tuple[str, str]]] = [
     (("S1", "baseline"),             ("S2", "problem_description")),
     (("S1", "problem_description"),  ("S2", "baseline")),
     (("S2", "baseline"),             ("S1", "problem_description")),
@@ -142,7 +140,7 @@ _GROUPS_COUNTERBALANCED: List[Tuple[Tuple[str, str], Tuple[str, str]]] = [
 ]
 
 
-def assign(participant_number: int) -> List[Dict[str, str]]:
+def assign(participant_number: int) -> list[dict[str, str]]:
     """Return the two sessions for a participant, in the order they run them.
 
     Each session dict has: session (1 or 2), scenario, arm, label.
@@ -161,7 +159,7 @@ def assign(participant_number: int) -> List[Dict[str, str]]:
     ]
 
 
-def get_scenario(scenario_id: str) -> Dict[str, str]:
+def get_scenario(scenario_id: str) -> dict[str, str]:
     if scenario_id not in SCENARIOS:
         raise KeyError(f"Unknown scenario {scenario_id!r}; expected one of {sorted(SCENARIOS)}")
     return SCENARIOS[scenario_id]

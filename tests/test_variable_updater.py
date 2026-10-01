@@ -1,6 +1,5 @@
 """tests/test_variable_updater.py — unit tests for ExplicitVariableUpdater."""
 
-from problem_tracker.core.problem_description import ProblemDescription
 from problem_tracker.updaters.explicit_variable_updater import ExplicitVariableUpdater
 from tests.conftest import make_pd_with_goal
 

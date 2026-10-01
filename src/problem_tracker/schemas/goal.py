@@ -24,8 +24,8 @@ loadable.)
 
 from __future__ import annotations
 
-from dataclasses import dataclass, asdict
-from typing import Any, Dict, List
+from dataclasses import asdict, dataclass
+from typing import Any
 
 __all__ = [
     "GOAL_SCHEMA_VERSION",
@@ -55,12 +55,12 @@ class Goal:
     introduced_turn: str = ""
     last_updated_turn: str = ""
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Return a JSON-serializable dict for this goal."""
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "Goal":
+    def from_dict(cls, data: dict[str, Any]) -> Goal:
         """Construct a Goal from a plain dict (e.g. parsed JSON).
 
         Tolerates v1 dicts (version-history format): the active version's text
@@ -90,13 +90,13 @@ class Goal:
         )
 
 
-def validate_goal(goal: Goal) -> List[str]:
+def validate_goal(goal: Goal) -> list[str]:
     """Validate a Goal against goal_schema_v2.
 
     Returns a list of human-readable error strings. An empty list means the
     goal is valid.
     """
-    errors: List[str] = []
+    errors: list[str] = []
 
     if not goal.goal_id:
         errors.append("goal_id is required and must be non-empty")

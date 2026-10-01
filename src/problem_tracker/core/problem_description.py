@@ -1,26 +1,29 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field, asdict
-from typing import Any, Dict, List
+from dataclasses import asdict, dataclass, field
+from typing import Any
 
-from problem_tracker.schemas.goal import Goal, validate_goal  # goal_schema_v2: immutable goals
-from problem_tracker.schemas.variable import Variable, validate_variable
 from problem_tracker.schemas.constraint import Constraint, validate_constraint
+from problem_tracker.schemas.goal import (  # goal_schema_v2: immutable goals
+    Goal,
+    validate_goal,
+)
+from problem_tracker.schemas.variable import Variable, validate_variable
 
 __all__ = ["ExplicitState", "ProblemDescription"]
 
 
 @dataclass
 class ExplicitState:
-    goals: List[Goal] = field(default_factory=list)
-    variables: List[Variable] = field(default_factory=list)
-    constraints: List[Constraint] = field(default_factory=list)
+    goals: list[Goal] = field(default_factory=list)
+    variables: list[Variable] = field(default_factory=list)
+    constraints: list[Constraint] = field(default_factory=list)
 
 
 @dataclass
 class ProblemDescription:
     explicit: ExplicitState = field(default_factory=ExplicitState)
-    implicit: Dict[str, Any] = field(default_factory=dict)
+    implicit: dict[str, Any] = field(default_factory=dict)
 
     def get_goal(self, goal_id: str) -> Goal | None:
         return next((g for g in self.explicit.goals if g.goal_id == goal_id), None)
@@ -31,20 +34,20 @@ class ProblemDescription:
     def get_constraint(self, constraint_id: str) -> Constraint | None:
         return next((c for c in self.explicit.constraints if c.constraint_id == constraint_id), None)
 
-    def constraints_for_goal(self, goal_id: str) -> List[Constraint]:
+    def constraints_for_goal(self, goal_id: str) -> list[Constraint]:
         return [c for c in self.explicit.constraints if c.goal_id == goal_id]
 
-    def active_goals(self) -> List[Goal]:
+    def active_goals(self) -> list[Goal]:
         return [g for g in self.explicit.goals if g.status == "active"]
 
-    def variables_for_goal(self, goal_id: str) -> List[Variable]:
+    def variables_for_goal(self, goal_id: str) -> list[Variable]:
         return [v for v in self.explicit.variables if v.goal_id == goal_id]
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "ProblemDescription":
+    def from_dict(cls, data: dict[str, Any]) -> ProblemDescription:
         explicit_data = data.get("explicit", {})
         return cls(
             explicit=ExplicitState(
@@ -55,8 +58,8 @@ class ProblemDescription:
             implicit=dict(data.get("implicit", {})),
         )
 
-    def validate(self) -> List[str]:
-        errors: List[str] = []
+    def validate(self) -> list[str]:
+        errors: list[str] = []
         goal_ids = {g.goal_id for g in self.explicit.goals}
 
         seen_goal_ids: set[str] = set()

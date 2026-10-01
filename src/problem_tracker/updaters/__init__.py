@@ -10,16 +10,18 @@ Layout (per the formal model S_{t+1} = A(S_t, V(E(S_t, u_t)))):
     errors.py      shared exception types
 """
 
-from problem_tracker.updaters.explicit_updater import ExplicitUpdater
-from problem_tracker.updaters.explicit_goal_updater import ExplicitGoalUpdater
-from problem_tracker.updaters.explicit_variable_updater import ExplicitVariableUpdater
-from problem_tracker.updaters.explicit_constraint_updater import ExplicitConstraintUpdater
 from problem_tracker.updaters.errors import ExtractionError
+from problem_tracker.updaters.explicit_constraint_updater import (
+    ExplicitConstraintUpdater,
+)
+from problem_tracker.updaters.explicit_goal_updater import ExplicitGoalUpdater
+from problem_tracker.updaters.explicit_updater import ExplicitUpdater
+from problem_tracker.updaters.explicit_variable_updater import ExplicitVariableUpdater
 
 __all__ = [
-    "ExplicitUpdater",
-    "ExplicitGoalUpdater",
-    "ExplicitVariableUpdater",
     "ExplicitConstraintUpdater",
+    "ExplicitGoalUpdater",
+    "ExplicitUpdater",
+    "ExplicitVariableUpdater",
     "ExtractionError",
 ]

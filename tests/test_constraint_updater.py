@@ -1,7 +1,8 @@
 """tests/test_constraint_updater.py — unit tests for ExplicitConstraintUpdater."""
 
-from problem_tracker.core.problem_description import ProblemDescription
-from problem_tracker.updaters.explicit_constraint_updater import ExplicitConstraintUpdater
+from problem_tracker.updaters.explicit_constraint_updater import (
+    ExplicitConstraintUpdater,
+)
 from tests.conftest import make_pd_with_goal
 
 

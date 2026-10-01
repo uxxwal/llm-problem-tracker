@@ -16,13 +16,13 @@ All log entries use the key ``turn_id`` (a string such as ``"t1"``).
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from problem_tracker.core.problem_description import ProblemDescription
 from problem_tracker.llm_client import LLMClient
+from problem_tracker.updaters.applicators.goal_applicator import GoalApplicator
 from problem_tracker.updaters.errors import ExtractionError
 from problem_tracker.updaters.extractors.goal_extractor import GoalExtractor
-from problem_tracker.updaters.applicators.goal_applicator import GoalApplicator
 
 __all__ = ["ExplicitGoalUpdater"]
 
@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 
 class ExplicitGoalUpdater:
-    def __init__(self, client: Optional[LLMClient] = None):
+    def __init__(self, client: LLMClient | None = None):
         self.extractor = GoalExtractor(client=client)
         self.applicator = GoalApplicator()
 
@@ -39,13 +39,13 @@ class ExplicitGoalUpdater:
         pd: ProblemDescription,
         user_turn: str,
         turn_id: str,
-    ) -> Tuple[ProblemDescription, List[Dict[str, Any]]]:
+    ) -> tuple[ProblemDescription, list[dict[str, Any]]]:
         """Run the full goal-update pipeline for one user turn.
 
         Returns (pd, operation_log). Every failure is appended to the log
         rather than being silently dropped or raising to the caller.
         """
-        operation_log: List[Dict[str, Any]] = []
+        operation_log: list[dict[str, Any]] = []
 
         # E: extraction (LLM boundary)
         try:

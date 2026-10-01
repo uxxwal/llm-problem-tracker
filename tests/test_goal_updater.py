@@ -8,7 +8,6 @@ from problem_tracker.core.problem_description import ProblemDescription
 from problem_tracker.updaters.explicit_goal_updater import ExplicitGoalUpdater
 from tests.conftest import make_pd_with_goal
 
-
 # ---------------------------------------------------------------------------
 # Stub clients
 # ---------------------------------------------------------------------------

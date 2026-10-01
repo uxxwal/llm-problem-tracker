@@ -12,7 +12,6 @@ from problem_tracker.core.problem_description import ProblemDescription
 from problem_tracker.updaters.explicit_updater import ExplicitUpdater
 from tests.conftest import make_pd_with_goal
 
-
 # ---------------------------------------------------------------------------
 # Multi-component stub client
 # The ExplicitUpdater uses a single client for all three updaters.

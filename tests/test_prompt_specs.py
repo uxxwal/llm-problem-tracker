@@ -8,18 +8,17 @@ contradicted the stated rules, so the few-shots are pinned here.
 import json
 
 from problem_tracker.prompt_specs import (
-    GOAL_SYSTEM_PROMPT,
-    VARIABLE_EXTRACTION_SYSTEM_PROMPT,
-    CONSTRAINT_EXTRACTION_SYSTEM_PROMPT,
+    _CONSTRAINT_FEW_SHOTS,
     _FEW_SHOTS,
     _VARIABLE_EXTRACTION_FEW_SHOTS,
-    _CONSTRAINT_FEW_SHOTS,
-    build_variable_extraction_messages,
+    CONSTRAINT_EXTRACTION_SYSTEM_PROMPT,
+    GOAL_SYSTEM_PROMPT,
+    VARIABLE_EXTRACTION_SYSTEM_PROMPT,
     build_constraint_extraction_messages,
+    build_variable_extraction_messages,
 )
-from problem_tracker.schemas.variable import VALID_VARIABLE_ROLES
 from problem_tracker.schemas.constraint import VALID_CONSTRAINT_TYPES
-
+from problem_tracker.schemas.variable import VALID_VARIABLE_ROLES
 
 # ---------------------------------------------------------------------------
 # Goal few-shots must obey the rules stated in the goal prompt

@@ -2,7 +2,6 @@ from problem_tracker.core.session import Session
 from problem_tracker.llm_client import LLMClient
 from problem_tracker.updaters import ExplicitUpdater
 
-
 turns = [
     "Help me plan a trip to Kyoto.",
     "I want to stay for 5 days and go in spring.",

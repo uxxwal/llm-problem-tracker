@@ -6,9 +6,12 @@ Applicator boundary: everything in this file must be reproducible.
 """
 
 from problem_tracker.core.problem_description import ProblemDescription
-from problem_tracker.updaters.applicators import GoalApplicator, VariableApplicator, ConstraintApplicator
+from problem_tracker.updaters.applicators import (
+    ConstraintApplicator,
+    GoalApplicator,
+    VariableApplicator,
+)
 from tests.conftest import make_pd_with_goal
-
 
 # ---------------------------------------------------------------------------
 # GoalApplicator

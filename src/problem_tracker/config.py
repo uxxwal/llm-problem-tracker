@@ -14,7 +14,6 @@ Format (one KEY=value per line, # for comments):
 from __future__ import annotations
 
 import os
-from typing import List, Optional
 
 __all__ = ["load_env", "missing_llm_config", "require_llm_config"]
 
@@ -42,7 +41,7 @@ def load_env(path: str = ".env") -> bool:
     return True
 
 
-def missing_llm_config() -> List[str]:
+def missing_llm_config() -> list[str]:
     """Return the names of any required LLM settings that are not set."""
     return [name for name in REQUIRED if not os.getenv(name)]
 

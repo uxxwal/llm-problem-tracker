@@ -17,10 +17,14 @@ Identity rules:
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List
+from typing import Any
 
 from problem_tracker.core.problem_description import ProblemDescription
-from problem_tracker.schemas.variable import Variable, validate_variable, VALID_VARIABLE_ROLES
+from problem_tracker.schemas.variable import (
+    VALID_VARIABLE_ROLES,
+    Variable,
+    validate_variable,
+)
 
 __all__ = ["VariableApplicator"]
 
@@ -36,16 +40,16 @@ class VariableApplicator:
     def apply(
         self,
         pd: ProblemDescription,
-        raw: List[Dict[str, Any]],
+        raw: list[dict[str, Any]],
         active_goal_id: str,
         turn_id: str,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Apply raw extracted items to pd. Returns the operation log entries."""
         existing_by_name = {
             v.name: v for v in pd.explicit.variables if v.goal_id == active_goal_id
         }
 
-        ops: List[Dict[str, Any]] = []
+        ops: list[dict[str, Any]] = []
         created_this_turn: set = set()  # variable_ids created during this call
 
         for item in raw:
