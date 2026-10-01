@@ -19,7 +19,7 @@ import os
 from typing import Any, Dict, List, Optional
 
 from problem_tracker.core.problem_description import ProblemDescription
-from problem_tracker.llm_client import LLMClient
+from problem_tracker.llm_client import LLMClient, ChatClient
 
 __all__ = ["ReplyGenerator", "render_problem_description", "ARMS"]
 
@@ -141,7 +141,7 @@ def render_problem_description(pd: ProblemDescription) -> str:
 
 
 class ReplyGenerator:
-    def __init__(self, client: Optional[LLMClient] = None):
+    def __init__(self, client: ChatClient | None = None):
         # Extraction runs at temperature 0 (one intended answer). Reply
         # generation is conversational, so it is configured separately and
         # LEFT AT THE API DEFAULT unless set — lowering it would reduce noise in

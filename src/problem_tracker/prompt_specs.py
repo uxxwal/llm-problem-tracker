@@ -260,7 +260,7 @@ _VARIABLE_EXTRACTION_FEW_SHOTS = [
 
 
 def _make_variable_extraction_user_message(
-    user_turn: str, active_goal: str, existing_vars: list = None
+    user_turn: str, active_goal: str, existing_vars: list | None
 ) -> str:
     """``active_goal`` is a descriptor string — either a bare id ("G1") or,
     preferably, id plus objective text ('G1 ("Plan trip")') so the model knows
@@ -276,7 +276,7 @@ def _make_variable_extraction_user_message(
 
 
 def build_variable_extraction_messages(
-    user_turn: str, active_goal: str, existing_vars: list = None
+    user_turn: str, active_goal: str, existing_vars: list | None
 ) -> list:
     messages = [{"role": "system", "content": VARIABLE_EXTRACTION_SYSTEM_PROMPT}]
     for turn, goal, ex_vars, output in _VARIABLE_EXTRACTION_FEW_SHOTS:
@@ -437,7 +437,7 @@ _CONSTRAINT_FEW_SHOTS = [
 
 
 def _make_constraint_extraction_user_message(
-    user_turn: str, active_goal: str, existing_constraints: list = None
+    user_turn: str, active_goal: str, existing_constraints: list | None
 ) -> str:
     """``active_goal`` is a descriptor string, as in variable extraction."""
     parts = [f"Active goal: {active_goal}"]
@@ -451,19 +451,20 @@ def _make_constraint_extraction_user_message(
 
 
 def build_constraint_extraction_messages(
-    user_turn: str, active_goal: str, existing_constraints: list = None
+    user_turn: str, active_goal: str, existing_constraints: list | None = None
 ) -> list:
+    existing_constraints = existing_constraints or []
     messages = [{"role": "system", "content": CONSTRAINT_EXTRACTION_SYSTEM_PROMPT}]
     for turn, goal, ex_cons, output in _CONSTRAINT_FEW_SHOTS:
         messages.append({
             "role": "user",
-            "content": _make_constraint_extraction_user_message(turn, goal, ex_cons or None),
+            "content": _make_constraint_extraction_user_message(turn, goal, ex_cons or []),
         })
         messages.append({"role": "assistant", "content": output})
     messages.append({
         "role": "user",
         "content": _make_constraint_extraction_user_message(
-            user_turn, active_goal, existing_constraints or None
+            user_turn, active_goal, existing_constraints
         ),
     })
     return messages

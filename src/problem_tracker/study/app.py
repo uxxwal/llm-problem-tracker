@@ -489,9 +489,9 @@ def _next_body(pid: str, spec: Dict[str, str]) -> str:
 # ---------------------------------------------------------------------------
 
 class Handler(BaseHTTPRequestHandler):
-    client = None
-    updater = None
-    replier = None
+    client: _DryRunClient | LLMClient | None = None
+    updater: ExplicitUpdater | None = None
+    replier: ReplyGenerator | None = None
 
     def log_message(self, fmt, *args):  # quieter console
         pass
@@ -618,16 +618,17 @@ class Handler(BaseHTTPRequestHandler):
                 return
             text = (data.get("text") or "").strip()
             with _lock:
-                run = _runs.get(key)
-            if run is None:
+                found = _runs.get(key)
+            if found is None: 
                 # Rebuild from the autosaved transcript rather than losing the
                 # conversation: _runs is in-memory, so any restart of the server
                 # would otherwise strand every participant mid-session with work
                 # that is sitting on disk.
-                run = _rehydrate(pid, session_raw, self.client, self.updater, self.replier)
-            if run is None:
+                found = _rehydrate(pid, session_raw, self.client, self.updater, self.replier)
+            if found is None:
                 self._respond(_page('<h1>Session expired</h1>'), 404)
                 return
+            run = found
             if text:
                 run.send(text)   # no-ops safely if finished or a duplicate submit
             if run.finished:

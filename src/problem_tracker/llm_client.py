@@ -1,7 +1,7 @@
 import os
 import json
 import re
-
+from typing import Protocol
 
 def resolve_temperature(explicit=None):
     """Extraction default is 0. Kept at module level so the default is testable
@@ -15,6 +15,11 @@ def resolve_seed(explicit=None):
     raw = os.getenv("LLM_SEED") if explicit is None else explicit
     return int(raw) if raw not in (None, "") else None
 
+class ChatClient(Protocol):
+    """Protocol for a chat client that can be stubbed in tests."""
+
+    def chat(self, messages: list[dict[str, str]]) -> str:
+        ...
 
 class LLMClient:
     """Thin OpenAI-compatible chat client.

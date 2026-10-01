@@ -23,3 +23,9 @@ dev = [
     "pytest>=9.1.1",
     "ruff>=0.16.9",
 ]
+[tool.mypy]
+python_version = "3.12"
+files = ['src']
+check_untyped_defs = true
+warn_unused_ignores = true
+
