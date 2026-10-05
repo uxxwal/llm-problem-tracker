@@ -8,6 +8,7 @@ turn-counter restoration on load.
 import json
 import os
 import tempfile
+from pathlib import Path
 
 from problem_tracker.core.session import Session
 from problem_tracker.updaters import ExplicitUpdater
@@ -124,11 +125,11 @@ def test_prompt_version_recorded_and_preserved():
 
     with tempfile.TemporaryDirectory() as d:
         path = session.save(directory=d)
-        raw = json.load(open(path, encoding="utf-8"))
+        raw = json.loads(Path(path).read_text(encoding="utf-8"))
         assert raw["prompt_version"] == session.prompt_version
         # simulate loading a session recorded under different prompts
         raw["prompt_version"] = "0123456789ab"
-        json.dump(raw, open(path, "w", encoding="utf-8"))
+        Path(path).write_text(json.dumps(raw), encoding="utf-8")
         loaded = Session.load(path)
     assert loaded.prompt_version == "0123456789ab"
 

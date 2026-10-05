@@ -6,6 +6,7 @@ contradicted the stated rules, so the few-shots are pinned here.
 """
 
 import json
+from itertools import pairwise
 
 from problem_tracker.prompt_specs import (
     _CONSTRAINT_FEW_SHOTS,
@@ -197,7 +198,7 @@ def test_variable_messages_alternate_roles_and_end_with_user():
     assert messages[0]["role"] == "system"
     assert messages[-1]["role"] == "user"
     assert 'User turn: "some turn"' in messages[-1]["content"]
-    for a, b in zip(messages[1:], messages[2:]):
+    for a, b in pairwise(messages[1:]):
         assert a["role"] != b["role"], "few-shot turns must alternate user/assistant"
 
 

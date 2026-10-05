@@ -34,7 +34,7 @@ import hashlib
 import json
 import os
 import uuid
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any
 
 from problem_tracker.core.problem_description import ProblemDescription
@@ -65,18 +65,18 @@ def prompt_fingerprint() -> str:
     try:
         from problem_tracker.study.reply import _PD_PREAMBLE, REPLY_SYSTEM_PROMPT
         parts += [REPLY_SYSTEM_PROMPT, _PD_PREAMBLE]
-    except Exception:
+    except ImportError:
         pass  # reply generation is only present for study runs
     return hashlib.sha256(chr(31).join(parts).encode("utf-8")).hexdigest()[:12]
 
 
 def _now() -> str:
-    return datetime.now().isoformat(timespec="seconds")
+    return datetime.now(UTC).isoformat(timespec="seconds")
 
 
 def _new_session_id() -> str:
     # timestamp for human sorting + short random suffix against collisions
-    return f"s{datetime.now().strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:6]}"
+    return f"s{datetime.now(UTC).strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:6]}"
 
 
 class Session:

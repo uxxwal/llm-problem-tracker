@@ -670,7 +670,7 @@ def test_duplicate_is_kept_on_the_goal_it_is_actually_about():
 
     class _VisaStub:
         def chat_json(self, messages):
-            system = messages[0]["content"]; content = messages[-1]["content"]
+            system = messages[0]["content"]
             if "goal-tracking" in system:
                 return [{"operation": "create_goal", "goal_text": "Plan move"},
                         {"operation": "create_goal", "goal_text": "Sort out visa"}]

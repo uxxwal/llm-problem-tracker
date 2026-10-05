@@ -61,7 +61,7 @@ def test_abandon_goal():
     client = _StubClient({"never mind": [{"operation": "abandon_goal", "goal_id": "G1"}]})
     updater = ExplicitGoalUpdater(client=client)
     pd = make_pd_with_goal()
-    pd, log = updater.update(pd, "never mind", "t2")
+    pd, _log = updater.update(pd, "never mind", "t2")
     assert pd.get_goal("G1").status == "abandoned"
 
 
@@ -94,7 +94,7 @@ def test_additional_goal_leaves_existing_active():
     client = _StubClient({"also a packing list": [{"operation": "create_goal", "goal_text": "Draft packing list"}]})
     updater = ExplicitGoalUpdater(client=client)
     pd = make_pd_with_goal(text="Plan trip")
-    pd, log = updater.update(pd, "also a packing list", "t2")
+    pd, _log = updater.update(pd, "also a packing list", "t2")
     statuses = {g.goal_id: g.status for g in pd.explicit.goals}
     assert statuses == {"G1": "active", "G2": "active"}
 

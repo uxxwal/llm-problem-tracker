@@ -5,6 +5,8 @@ respect: the problem description appears in the reply prompt of one and not
 the other. If that fails, RQ3 measures nothing.
 """
 
+from pathlib import Path
+
 from problem_tracker.core.problem_description import ProblemDescription
 from problem_tracker.schemas.constraint import Constraint
 from problem_tracker.schemas.variable import Variable
@@ -305,7 +307,7 @@ def test_study_sessions_store_nothing_the_participant_typed():
         run.send("my address is 14 Leith Walk and my name is Ujjwal")
         path = run.save()
 
-        blob = open(path, encoding="utf-8").read()
+        blob = Path(path).read_text(encoding="utf-8")
         for leak in ("Leith Walk", "Ujjwal", "venue", "assistant reply", "my address"):
             assert leak not in blob, f"{leak!r} was written to the session file"
 

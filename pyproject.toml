@@ -24,8 +24,10 @@ dev = [
     "ruff>=0.16.9",
 ]
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 files = ['src']
 check_untyped_defs = true
 warn_unused_ignores = true
 
+[tool.ruff.lint.per-file-ignores]
+"scripts/check_llm.py" = ['BLE001']

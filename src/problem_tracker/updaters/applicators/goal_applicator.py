@@ -59,7 +59,7 @@ class GoalApplicator:
         """
         for op in operations:
             if not isinstance(op, dict):
-                raise ValueError(f"Operation must be a dict, got {type(op).__name__}")
+                raise TypeError(f"Operation must be a dict, got {type(op).__name__}")
             op_type = op.get("operation")
             if op_type not in VALID_GOAL_OPERATIONS:
                 raise ValueError(f"Invalid goal operation: {op_type!r}")

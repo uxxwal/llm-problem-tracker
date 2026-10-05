@@ -181,8 +181,8 @@ class ReplyGenerator:
 
         try:
             return (self.client.chat(messages) or "").strip()
-        except Exception as e:
-            logger.error("[ReplyGenerator] reply call failed: %s", e)
+        except Exception:
+            logger.exception("[ReplyGenerator] reply call failed")
             # Never crash a participant's session on a transport error.
             return ("Sorry — I had trouble responding just then. "
                     "Could you say that again?")

@@ -61,7 +61,7 @@ class ExplicitGoalUpdater:
         # V: shape validation against the fixed operation vocabulary
         try:
             self.applicator.validate_operations(operations)
-        except ValueError as e:
+        except (ValueError, TypeError) as e:
             logger.warning("[ExplicitGoalUpdater] validation failed (%s), no_goal_change", e)
             operation_log.append({
                 "operation": "validation_failed",

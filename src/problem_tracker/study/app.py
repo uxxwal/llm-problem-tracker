@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """study/app.py — the user-study chat application.
 
 Runs both study arms behind one visually identical interface. The only
@@ -153,7 +153,7 @@ def _rehydrate(pid: str, session_no: str, client, updater, replier) -> Run | Non
             continue
         try:
             session = Session.load(os.path.join(SESSION_DIR, name))
-        except Exception:
+        except (OSError, KeyError, json.JSONDecodeError):
             continue
         if not session.notes.startswith(marker):
             continue
@@ -252,9 +252,9 @@ class Run:
         # researcher, since it means data is being lost as it is collected.
         try:
             self.save()
-        except Exception as e:
-            logger.error("[app] AUTOSAVE FAILED for %s: %s — data is not being "
-                         "written to disk", self.key, e)
+        except Exception:
+            logger.exception("[app] AUTOSAVE FAILED for %s — data is not being "
+                         "written to disk", self.key)
         return reply
 
     def save(self) -> str:
@@ -466,7 +466,6 @@ def _review_body(pid: str) -> str:
     # produce complaints of inaccuracy that say nothing about the
     # representation. Name it, and name the task it belongs to.
     label = html.escape(schema_session["label"])
-    scenario_title = html.escape(get_scenario(schema_session["scenario"])["title"])
     ordinal = "second" if schema_session["session"] == "2" else "first"
     return ('<h1>One last thing</h1>'
             f'<div class="sub">The following summary is from your conversation with '
@@ -658,7 +657,7 @@ def _lan_ip() -> str | None:
     try:
         s.connect(("8.8.8.8", 80))
         return s.getsockname()[0]
-    except Exception:
+    except OSError:
         return None
     finally:
         s.close()
